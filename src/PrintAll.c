@@ -1,8 +1,8 @@
 #include "PrintAll.h"
 #include "cpu.c"
 #include "memory.c"
-#include "myTerm.c"
 #include "myBigChars.c"
+#include "myTerm.c"
 
 int bcint0[2] = {1717992960, 8283750};
 int bcint1[2] = {471341056, 3938328};
@@ -38,12 +38,22 @@ int pa_ProgRun()
         if (data[0] == 0 && data[1] == 0 && data[2] == 0)
             break;
         int value = 0;
-        sc_commandEncode(data[1], data[2], &value);
+        if(sc_commandEncode(data[1], data[2], &value) != 0)
+        {
+            printf("shkura %d",data[0]);
+            fflush(stdout);
+        }
+        else
+        {
+            printf("norm\n");
+            fflush(stdout);
+        }
         sc_memorySet(data[0], value);
     }
     fclose(test);
+    scanf("%d",&check);
+    sc_regInit();
     pa_resetTerm();
-
     while (key != key_quit) {
         rk_readkey(&key);
         switch (key) {
@@ -144,9 +154,8 @@ int pa_resetTerm()
     pa_printOperation();
     pa_printFlags();
     pa_printCase();
-    int x, y;
-    pa_getXY(&x, &y);
     mt_gotoXY(24, 1);
+    fflush(stdout);
     return 0;
 }
 
@@ -162,7 +171,9 @@ int pa_initComp()
 int pa_printAllBox()
 {
     mt_setscreensize(83, 47);
+
     mt_clrscr();
+
     pa_printBoxMemory();
     pa_printBoxAccumulator();
     pa_printBoxInstructionCounter();

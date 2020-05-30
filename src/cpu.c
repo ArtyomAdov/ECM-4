@@ -17,7 +17,7 @@ int CU()
     if ((command >= 0x30 && command <= 0x33) || (command = 0x51)) {
         ALU(command, operand);
     } else {
-        int f;
+        int f = 0;
         switch (command) {
         case (READ): {
             printf("> ");
