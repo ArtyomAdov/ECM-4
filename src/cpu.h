@@ -3,6 +3,7 @@
 
 #include "memory.h"
 #include "myTerm.h"
+
 #include <stdio.h>
 
 int accumulator;

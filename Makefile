@@ -4,28 +4,31 @@ FLAGS = -Wall -Werror -std=c99
 
 CFLAGS = -c -Wall -Werror -std=c99
 
-LIBS = lib/libmemory.a lib/libmyTerm.a lib/libmyBigChars.a lib/libPrintAll.a lib/libmyReadkey.a lib/libtransGeomAdd.a lib/libcpu.a
+LIBS = lib/libmemory.a lib/libmyTerm.a lib/libmyBigChars.a lib/libPrintAll.a lib/libmyReadkey.a lib/libcpu.a lib/libassembler.a
 
-all: makedirs bin/key 
+all: makedirs bin/key bin/key_assembler
 	rm build/*.o
 
 bin/key: build/main.o $(LIBS)
 	$(CXX) $(FLAGS) build/main.o $(LIBS) -o bin/key
 
+bin/key_assembler: build/assembler.o
+	$(CXX) $(FLSGS) assembler.c -o bin/key_assembler
+
 build/main.o: src/main.c
 	$(CXX) $(CFLAGS) src/main.c -o build/main.o
+
+build/assembler.o: assembler.c
+	$(CXX) $(CFLAGS) assembler.c -o build/assembler.o
+
+lib/libassembler.a: build/assembler.o
+	ar cr lib/libassembler.a build/assembler.o
 
 build/cpu.o: src/cpu.c
 	$(CXX) $(CFLAGS) src/cpu.c -o build/cpu.o
 
 lib/libcpu.a: build/cpu.o
 	ar cr lib/libcpu.a build/cpu.o
-
-build/transGeomAdd.o: src/transGeomAdd.c
-	$(CXX) $(CFLAGS) src/transGeomAdd.c -o build/transGeomAdd.o
-
-lib/libtransGeomAdd.a: build/transGeomAdd.o
-	ar cr lib/libtransGeomAdd.a build/transGeomAdd.o
 
 build/myReadkey.o: src/myReadkey.c
 	$(CXX) $(CFLAGS) src/myReadkey.c -o build/myReadkey.o
