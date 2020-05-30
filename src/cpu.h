@@ -25,7 +25,7 @@ int instructionCounter;
 #define JZ 0x42
 #define HALT 0x43
 
-#define NOT 0x51
+#define OR 0x53
 
 int CU();
 int ALU(int command, int operand);

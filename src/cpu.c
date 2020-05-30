@@ -14,13 +14,13 @@ int CU()
         sc_regSet(T, 1);
         return 1;
     }
-    if ((command >= 0x30 && command <= 0x33) || (command = 0x51)) {
+    if ((command >= 0x30 && command <= 0x33) || (command == 0x53)) {
         ALU(command, operand);
     } else {
-        int f = 0;
+        fflush(stdout);
         switch (command) {
         case (READ): {
-            printf("> ");
+            printf(">> ");
             char inputValue[30];
             scanf("%s", inputValue);
             int check = 0, num = 0;
@@ -28,24 +28,28 @@ int CU()
                 check = 1;
             for (int i = check; i < strlen(inputValue); i++) {
                 if (!(inputValue[i] >= '0' && inputValue[i] <= '9'))
-                    f = 1;
+                    return -1;
             }
             num = atoi(inputValue);
             if (!check && num <= 8191) {
                 sc_memorySet(operand, ((num & 8191)));
+                printf("one");
+                fflush(stdout);
             }
             if (check && num < 0 && abs(num) <= 8191) {
                 sc_memorySet(operand, ((abs(num) & 8191) + 24576));
+                printf("two");
+                fflush(stdout);
             }
             if (check && num > 0 && num <= 16383) {
                 sc_memorySet(operand, ((num & 8191) + (1 << 14)));
+                printf("three");
+                fflush(stdout);
             }
-            if (!f)
-                instructionCounter++;
             break;
         }
         case (WRITE): {
-            printf("< ");
+            printf("<< ");
             sc_memoryGet(operand, &local_value);
             if ((local_value >> 13) & 1) {
                 printf("-%d\n", local_value & 8191);
@@ -101,6 +105,9 @@ int CU()
         case (HALT): {
             sc_regSet(T, 0);
             return 1;
+            break;
+        }
+        default: {
             break;
         }
         }
@@ -218,6 +225,17 @@ int ALU(int command, int operand)
                         + (1 << 13) + (1 << 14);
         } else
             return -1;
+        break;
+    }
+    case (OR): {
+        sc_memoryGet(operand, &local_value);
+        local_value = (accumulator | local_value);
+        if ((local_value) > 0xFFFF || (local_value < 0)) {
+            sc_regSet(P, 1);
+            break;
+        }
+        accumulator = local_value;
+        local_value = 0;
         break;
     }
     }

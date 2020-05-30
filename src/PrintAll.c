@@ -28,30 +28,18 @@ int pa_ProgRun()
     pa_initComp();
     pa_printAllBox();
     pa_resetTerm();
-    int check = 0;
     FILE* test;
     test = fopen("output.o", "rb+");
     while (!feof(test)) {
-        check++;
         int data[3] = {0};
         fread(data, sizeof(int) * 3, 1, test);
         if (data[0] == 0 && data[1] == 0 && data[2] == 0)
             break;
         int value = 0;
-        if(sc_commandEncode(data[1], data[2], &value) != 0)
-        {
-            printf("shkura %d",data[0]);
-            fflush(stdout);
-        }
-        else
-        {
-            printf("norm\n");
-            fflush(stdout);
-        }
+        sc_commandEncode(data[1], data[2], &value);
         sc_memorySet(data[0], value);
     }
     fclose(test);
-    scanf("%d",&check);
     sc_regInit();
     pa_resetTerm();
     while (key != key_quit) {
@@ -171,9 +159,7 @@ int pa_initComp()
 int pa_printAllBox()
 {
     mt_setscreensize(83, 47);
-
     mt_clrscr();
-
     pa_printBoxMemory();
     pa_printBoxAccumulator();
     pa_printBoxInstructionCounter();
@@ -204,7 +190,16 @@ void pa_keyinstructionCounter()
 {
     printf("Please enter need value for instruction counter\n");
     fflush(stdout);
-    scanf("%d", &instructionCounter);
+    int local_value = 0;
+    scanf("%d", &local_value);
+    if((local_value > 0) && (local_value < 99))
+    {
+        instructionCounter = local_value;
+    }
+    else
+    {
+        sc_regSet(M,1);
+    }
     mt_clrscr();
     pa_printAllBox();
     pa_resetTerm();
@@ -400,7 +395,7 @@ int pa_printMemory()
             if ((memory[i * 10 + j] >> 14) == 0) {
                 printf("+%.4X", memory[i * 10 + j]);
             } else {
-                printf("+%.4X", memory[i * 10 + j]);
+                printf("-%.4X", memory[i * 10 + j]);
             }
         }
     }
@@ -413,7 +408,7 @@ int pa_printAccumulator()
     if ((accumulator >> 14) == 0) {
         printf("+%.4x", accumulator);
     } else {
-        printf("%.4x", accumulator);
+        printf("-%.4x", accumulator);
     }
     return 0;
 }
