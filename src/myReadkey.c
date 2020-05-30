@@ -3,11 +3,8 @@
 int rk_readkey(enum keys* key)
 {
     rk_mytermregime(1, 0, 1, 1, 1);
-
     char buf[8] = {0};
-
     read(STDIN_FILENO, buf, 8);
-
     if (strcmp(buf, "\E[A") == 0) {
         *key = key_up;
     } else if (strcmp(buf, "\E[B") == 0) {

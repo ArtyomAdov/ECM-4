@@ -7,6 +7,7 @@ CFLAGS = -c -Wall -Werror -std=c99
 LIBS = lib/libmemory.a lib/libmyTerm.a lib/libmyBigChars.a lib/libPrintAll.a lib/libmyReadkey.a lib/libcpu.a lib/libassembler.a
 
 all: makedirs bin/key bin/key_assembler
+	bin/key_assembler input.sa output.o
 	rm build/*.o
 
 bin/key: build/main.o $(LIBS)

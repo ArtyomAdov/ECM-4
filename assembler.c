@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
         int check = sscanf(s, "%s %s %s ", in, str, out);
         if (check != 3 || strlen(in) != 2
             || !(strlen(out) == 2 || strlen(out) == 5)) {
-            printf("ERROR WRONG INPUT %s %s %s \n", in, str, out);
+            printf("incorrect data in .sa %s %s %s \n", in, str, out);
             break;
         }
         int i;
