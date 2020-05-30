@@ -42,6 +42,7 @@ int pa_ProgRun()
     fclose(test);
     sc_regInit();
     pa_resetTerm();
+    sc_memorySet(72,16385);
     while (key != key_quit) {
         rk_readkey(&key);
         switch (key) {

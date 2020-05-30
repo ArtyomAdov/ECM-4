@@ -3,6 +3,7 @@
 
 #include "memory.h"
 #include "myTerm.h"
+#include "PrintAll.h"
 
 #include <stdio.h>
 

@@ -22,6 +22,9 @@ int CU()
             printf(">> ");
             char inputValue[30];
             scanf("%s", inputValue);
+            mt_clrscr();
+            pa_printAllBox();
+            pa_resetTerm();
             int check = 0, num = 0;
             if (inputValue[0] == '+' || inputValue[0] == '-')
                 check = 1;
