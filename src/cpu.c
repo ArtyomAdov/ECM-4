@@ -17,7 +17,6 @@ int CU()
     if ((command >= 0x30 && command <= 0x33) || (command == 0x53)) {
         ALU(command, operand);
     } else {
-        fflush(stdout);
         switch (command) {
         case (READ): {
             printf(">> ");
@@ -33,18 +32,12 @@ int CU()
             num = atoi(inputValue);
             if (!check && num <= 8191) {
                 sc_memorySet(operand, ((num & 8191)));
-                printf("one");
-                fflush(stdout);
             }
             if (check && num < 0 && abs(num) <= 8191) {
                 sc_memorySet(operand, ((abs(num) & 8191) + 24576));
-                printf("two");
-                fflush(stdout);
             }
             if (check && num > 0 && num <= 16383) {
                 sc_memorySet(operand, ((num & 8191) + (1 << 14)));
-                printf("three");
-                fflush(stdout);
             }
             break;
         }
@@ -56,7 +49,6 @@ int CU()
             } else {
                 printf("%d\n", local_value & 8191);
                 fflush(stdout);
-                sleep(5);
             }
             break;
         }
