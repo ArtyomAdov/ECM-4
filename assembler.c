@@ -75,13 +75,13 @@ int main(int argc, char* argv[])
         int check = sscanf(s, "%s %s %s ", in, str, out);
         if (check != 3 || strlen(in) != 2
             || !(strlen(out) == 2 || strlen(out) == 5)) {
-            printf("incorrect data in .sa %s %s %s \n", in, str, out);
+            printf("incorrect data in .sa %s %s %s\n", in, str, out);
             break;
         }
         int i;
         for (i = 0; i < strlen(in); i++) {
             if (!(in[i] >= '0' && in[i] <= '9')) {
-                printf("ERROR FIRST ARGUMENT INPUT\n");
+                printf("error string of start command\n");
                 break;
             }
         }

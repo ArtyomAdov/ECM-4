@@ -33,16 +33,17 @@ int pa_ProgRun()
     while (!feof(test)) {
         int data[3] = {0};
         fread(data, sizeof(int) * 3, 1, test);
-        if (data[0] == 0 && data[1] == 0 && data[2] == 0)
+        if (data[0] == 0 && data[1] == 0 && data[2] == 0) {
             break;
+        }
         int value = 0;
         sc_commandEncode(data[1], data[2], &value);
         sc_memorySet(data[0], value);
     }
     fclose(test);
     sc_regInit();
+    sc_memorySet(90, 16385);
     pa_resetTerm();
-    sc_memorySet(90,16385);
     while (key != key_quit) {
         rk_readkey(&key);
         switch (key) {
@@ -193,13 +194,10 @@ void pa_keyinstructionCounter()
     fflush(stdout);
     int local_value = 0;
     scanf("%d", &local_value);
-    if((local_value > 0) && (local_value < 99))
-    {
+    if ((local_value > 0) && (local_value < 99)) {
         instructionCounter = local_value;
-    }
-    else
-    {
-        sc_regSet(M,1);
+    } else {
+        sc_regSet(M, 1);
     }
     mt_clrscr();
     pa_printAllBox();
@@ -429,6 +427,7 @@ int pa_printOperation()
     int x, y;
     pa_getXY(&x, &y);
     sc_memoryGet(y * 10 + x, &value);
+
     mt_gotoXY(8, 69);
     if (sc_commandDecode(value, &command, &operand)) {
         printf("+00 : 00");

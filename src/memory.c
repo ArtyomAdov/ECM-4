@@ -58,7 +58,7 @@ int sc_memoryLoad(char* filename)
 
 int sc_regInit()
 {
-    flag = 0;
+    flag = 0b0;
     return 0;
 }
 
@@ -115,7 +115,7 @@ int sc_commandDecode(int value, int* command, int* operand)
     if (*command < 0x10 || (*command > 0x11 && *command < 0x20)
         || (*command > 0x21 && *command < 0x30)
         || (*command > 0x33 && *command < 0x40)
-        || (*command > 0x43 && *command < 0x51)) {
+        || (*command > 0x43 && *command < 0x51) || *command > 0x51) {
         sc_regSet(E, 1);
         return 1;
     }
