@@ -14,7 +14,7 @@ int CU()
         sc_regSet(T, 1);
         return 1;
     }
-    if ((command >= ADD && command <= MUL) || (command == NOT)) {
+    if ((command >= ADD && command <= MUL) || (command == AND)) {
         ALU(command, operand);
     } else {
         switch (command) {
@@ -219,14 +219,19 @@ int ALU(int command, int operand)
             return -1;
         break;
     }
-    case (NOT): {
-        local_value = accumulator;
-        for (int i = 0; i < 15; i++) {
-            local_value ^= 1 << i;
-        }
-        sc_memorySet(operand, local_value);
-        break;
-    }
+    case (AND):
+			{
+				sc_memoryGet(operand, &local_value);
+				local_value = (accumulator & local_value);
+				if((local_value) > 0xFFFF || (local_value < 0))
+				{
+					sc_regSet(P,1);
+					break;
+				}
+				accumulator = local_value;
+				local_value = 0;
+				break;
+			}
     }
     return 1;
 }
